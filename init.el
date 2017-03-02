@@ -31,6 +31,8 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     python
+     lua
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
@@ -57,7 +59,6 @@ values."
      emacs-lisp
      (clojure :variables clojure-enable-fancify-symbols t)
 	 latex
-     ;;xccui
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -135,8 +136,8 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(spacemacs-dark
-                         spacemacs-light)
+   dotspacemacs-themes '(monokai
+                 	     sanityinc-solarized-light)
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
@@ -293,6 +294,12 @@ values."
    ))
 
 (defun dotspacemacs/user-init ()
+  "Initialization function for user code.
+It is called immediately after `dotspacemacs/init', before layer configuration
+executes.
+ This function is mostly useful for variables that need to be set
+before packages are loaded. If you are unsure, you should try in setting them in
+`dotspacemacs/user-config' first."
   ;; Added by xccui
   ;; use local melpa source
   (setq configuration-layer--elpa-archives
@@ -302,18 +309,10 @@ values."
 
   ;; set line number for all buffers
   (global-linum-mode 1)
-
   ;; set emacs to full screen when startup
   (setq initial-frame-alist (quote ((fullscreen . maximized))))
   (setq tramp-ssh-controlmaster-options
 		      "-o ControlMaster=auto -o ControlPath='tramp.%%C' -o ControlPersist=no")
-
-  "Initialization function for user code.
-It is called immediately after `dotspacemacs/init', before layer configuration
-executes.
- This function is mostly useful for variables that need to be set
-before packages are loaded. If you are unsure, you should try in setting them in
-`dotspacemacs/user-config' first."
   )
 
 (defun dotspacemacs/user-config ()
@@ -325,6 +324,9 @@ explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
   ;; Added by xccui
   (add-hook 'doc-view-mode-hook 'auto-revert-mode)
+  (add-hook 'text-mode-hook 'spacemacs/toggle-truncate-lines-off)
+  ;; Visual line navigation for textual modes
+  ;;(add-hook 'text-mode-hook 'spacemacs/toggle-visual-line-navigation-on)
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
